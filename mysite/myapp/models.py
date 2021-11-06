@@ -1,5 +1,7 @@
 from django.db import models
 
+
+
 # Create your models here.
 class Brewery(models.Model):
     id = models.AutoField(primary_key=True)
@@ -15,6 +17,8 @@ class Beer(models.Model):
     type = models.CharField(max_length=30)
     brewery = models.ForeignKey(Brewery, on_delete=models.SET_NULL,null=True)    
     description= models.CharField(max_length=256,blank=True)
+    def getName(self):
+        return name
 
 
 
