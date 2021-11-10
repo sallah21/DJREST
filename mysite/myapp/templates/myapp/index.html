@@ -1,7 +1,7 @@
 {% if beer_list %}
     <ul>
     {% for beer in beer_list %}
-        <li><a href="/myapp/{{ beer.id }}/">{{ beer.name }}</a></li>
+        <li><a href="/myapp/{{ beer.id }}/">{{ beer.name }}</a> Borwar <a href="/myapp/brewery/{{beer.brewery.id}}">{{beer.brewery.name}}</a></li>
     {% endfor %}
     </ul>
 {% else %}

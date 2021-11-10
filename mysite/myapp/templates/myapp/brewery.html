@@ -1,0 +1,13 @@
+{% if brewery%}
+
+   <h1>{{brewery.name}}</h1>
+ <ul>
+   
+   <li>{{brewery.country}}</li>
+   <li>{{brewery.type}}</li>
+   <li>{{brewery.owner}}</li>
+
+ </ul>
+ {% else%}
+ <h1> No brewery available. </h1>
+{% endif %}

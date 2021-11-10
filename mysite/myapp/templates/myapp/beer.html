@@ -1,6 +1,6 @@
 {% if beer %}
     <ul>
-    {%for b in beer%}
+    {% for b in beer%}
         <li>{{ b.name }}  </li>
         <li>  {{b.alc}}% alc  </li>
         <li> {{b.ibu}} ibu  </li>
@@ -8,7 +8,7 @@
         <li> {{b.brewery.name}}
         {%if b.description and b.description.strip%}
         <li> {{b.description}}</li>
-        {%endif%}
+        {% endif %}
     </ul>
       {% endfor %}
 {% else %}
