@@ -1,10 +1,23 @@
 from django import template
+from django.http import response
+from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse , Http404
 from django.template import context, loader
+from rest_framework.decorators import permission_classes
+from rest_framework.parsers import JSONParser
 from .models import Beer, Brewery
-
+from django.contrib.auth.models import User, Group
+from rest_framework import viewsets
+from rest_framework import permissions
+from myapp.serializers import UserSerializer, GroupSerializer, BeerSerializer
+import json
+from django.core.serializers import serialize
+from rest_framework.views import APIView
 # Create your views here.
+
+
+
 def index(request):
     beer_list = Beer.objects.all()
     template = loader.get_template('myapp/index.html')
@@ -34,14 +47,6 @@ def brewery(request, brewery_id):
         beer_list = Brewery.objects.filter(id = brewery_id).all().first
     except Brewery.DoesNotExist:
         raise Http404('Beer does not exist')
-
-    #output = ", ".join([q.name for q in beer_list])
-    #output2 = ", ".join([q.owner for q in beer_list])
-    #output3 = ", ".join([q.country for q in beer_list])
-    #output += ' '
-    #output += output2
-    #output += ' '
-    #output += output3
     context = {'brewery':beer_list}
     return HttpResponse(render(request, 'myapp/brewery.html',context))
 
@@ -68,4 +73,34 @@ def add(request):
             beer.brewery = brewid
             beer.description = request.POST.get('description')
             beer.save()
-    return render(request,'myapp/add_beer.html')
+    return ht(request,'myapp/add_beer.html')
+
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = User.objects.all().order_by('-date_joined')
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class GroupViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+def BeersViewSet(requset): 
+        data = Beer.objects.all().distinct()
+        #serializer_class = BeerSerializer
+        data2 = serialize("json",data,  fields = ( 'name', 'alc', 'ibu', 'type', 'brewery', 'description'))
+        #permission_classes = [permissions.IsAuthenticated]
+        #parser_classes = [JSONParser]
+        #def get(self, reqest, format=None):
+        #    return Response(request.data)
+        return JsonResponse(data2,safe=False)
