@@ -44,17 +44,15 @@ def name(request, name):
 
 def brewery(request, brewery_id):
     try:
-        beer_list = Brewery.objects.filter(id = brewery_id).all().first
+        beer_list = Brewery.objects.filter(id = brewery_id).all().distinct()
     except Brewery.DoesNotExist:
         raise Http404('Beer does not exist')
-    context = {'brewery':beer_list}
-    return HttpResponse(render(request, 'myapp/brewery.html',context))
+    data = serialize("json", beer_list, fields = ('id','name','country', 'type', 'owner'))
+    return JsonResponse(data, safe=False)
 
 def  type(request, type_name):
     #type_list = Beer.objects.filter(type = type_name).all()
     type_list = get_object_or_404(Beer, type=type_name)
-
-    #output = ", ".join([q.name for q in type_list])
     context ={'type':type_list,'type_name':type_name
     }
     return render(request,'myapp/brewery.html', context)
@@ -98,7 +96,13 @@ class GroupViewSet(viewsets.ModelViewSet):
 def BeersViewSet(requset): 
         data = Beer.objects.all().distinct()
         #serializer_class = BeerSerializer
-        data2 = serialize("json",data,  fields = ( 'name', 'alc', 'ibu', 'type', 'brewery', 'description'))
+        Brew = Brewery.objects.all().distinct()
+        data_list = list(data)
+        brewery_list = list (Brew)
+        comb = data_list + brewery_list
+        data2 = serialize("json",data,  fields = ( 'id','name', 'alc', 'ibu', 'type', 'brewery', 'description'))
+        Brew2 = serialize("json", Brew, fields = ('name','country', 'type', 'owner'))
+
         #permission_classes = [permissions.IsAuthenticated]
         #parser_classes = [JSONParser]
         #def get(self, reqest, format=None):
