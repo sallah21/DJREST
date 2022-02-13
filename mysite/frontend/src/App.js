@@ -18,6 +18,7 @@ function App() {
   // console.log(beerInfo);
   return (
     
+    
   <div className="App bg-gray-900 h-screen min-h-screen grid place-items-center" >
     <Container maxWidth="md"  className="flex"  >
       <div class="flex gap-5 ">
