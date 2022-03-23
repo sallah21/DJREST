@@ -10,7 +10,7 @@ function App() {
   const [beerInfo, setBeerInfo] = useState([]); 
   useEffect(()=>{
     axios.get('/myapp/beers/').then(res=>{
-      // console.log(res.data);
+      console.log(res.data);
       data =JSON.parse(res.data);
       setBeerInfo(data);
     }).catch(err=>{console.log(err)});  
@@ -23,8 +23,7 @@ function App() {
     <Container maxWidth="md"  className="flex"  >
       <div className="flex gap-5 ">
         {beerInfo.map(elem=>{
-          console.log(elem);
-          return <BeerInfo  id = {elem.pk} data={elem.fields}/>
+          return <BeerInfo key = {elem.id}  id = {elem.id} data={elem}/>
         })}
       </div>
       

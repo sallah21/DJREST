@@ -14,6 +14,7 @@ from myapp.serializers import UserSerializer, GroupSerializer, BeerSerializer
 import json
 from django.core.serializers import serialize
 from rest_framework.views import APIView
+
 # Create your views here.
 
 
@@ -93,18 +94,19 @@ class GroupViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 
-def BeersViewSet(requset): 
+def BeersViewSet(request): 
         data = Beer.objects.all().distinct()
-        #serializer_class = BeerSerializer
-        Brew = Brewery.objects.all().distinct()
-        data_list = list(data)
-        brewery_list = list (Brew)
-        comb = data_list + brewery_list
-        data2 = serialize("json",data,  fields = ( 'id','name', 'alc', 'ibu', 'type', 'brewery', 'description'))
-        Brew2 = serialize("json", Brew, fields = ('name','country', 'type', 'owner'))
-        
-        #permission_classes = [permissions.IsAuthenticated]
-        #parser_classes = [JSONParser]
-        #def get(self, reqest, format=None):
-        #    return Response(request.data)
+        dt = []
+        for item in data:
+            tmp = {
+                'id':item.id,
+                'alc': item.alc,
+                'name':item.name,
+                'ibu': item.ibu,
+                'type':item.type,
+                'brewery':item.brewery.name,
+                'description': item.description
+                }
+            dt.append(tmp)
+        data2 = json.dumps(dt)
         return JsonResponse(data2,safe=False)

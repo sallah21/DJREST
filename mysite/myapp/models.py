@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 class Brewery(models.Model):
-    id = models.AutoField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=50)
     country = models.CharField(max_length=50)
     type = models.CharField(max_length=20)
@@ -11,7 +11,7 @@ class Brewery(models.Model):
         return [(field.name, field.value_to_string(self)) for field in Beer._meta.fields]
     
 class Beer(models.Model):
-    id = models.AutoField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=50)
     alc = models.FloatField(default=5)
     ibu = models.FloatField(default=10)
