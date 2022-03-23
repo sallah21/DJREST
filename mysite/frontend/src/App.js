@@ -1,4 +1,4 @@
-import * as React from 'react';
+
 import { useEffect, useState } from 'react';
 import { Button, Container} from '@material-ui/core';
 import axios from 'axios';
@@ -21,15 +21,15 @@ function App() {
     
   <div className="App bg-gray-900 h-screen min-h-screen grid place-items-center" >
     <Container maxWidth="md"  className="flex"  >
-      <div class="flex gap-5 ">
+      <div className="flex gap-5 ">
         {beerInfo.map(elem=>{
           console.log(elem);
           return <BeerInfo  id = {elem.pk} data={elem.fields}/>
         })}
       </div>
-      <Router>
-        <Button variant="contained"><Link >Hello World</Link></Button>
-      </Router>
+      
+        <Button variant="contained">Add Beer</Button>
+      
     </Container>
 
   </div>

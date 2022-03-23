@@ -71,7 +71,7 @@ def add(request):
             beer.brewery = brewid
             beer.description = request.POST.get('description')
             beer.save()
-    return ht(request,'myapp/add_beer.html')
+    return http(request,'myapp/add_beer.html')
 
 
 
@@ -102,7 +102,7 @@ def BeersViewSet(requset):
         comb = data_list + brewery_list
         data2 = serialize("json",data,  fields = ( 'id','name', 'alc', 'ibu', 'type', 'brewery', 'description'))
         Brew2 = serialize("json", Brew, fields = ('name','country', 'type', 'owner'))
-
+        
         #permission_classes = [permissions.IsAuthenticated]
         #parser_classes = [JSONParser]
         #def get(self, reqest, format=None):
